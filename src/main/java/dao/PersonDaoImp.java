@@ -21,10 +21,10 @@ public class PersonDaoImp implements PersonDao {
     {
         personList = new ArrayList<>();
         Collections.addAll(personList,
-                new Person(++PEOPLE_COUNT, "Dmitry"),
-                new Person(++PEOPLE_COUNT, "Vasily"),
-                new Person(++PEOPLE_COUNT, "Elena"),
-                new Person(++PEOPLE_COUNT, "Kotya"));
+                new Person(++PEOPLE_COUNT, "Dmitry", 30, "morozavros@lol.ru"),
+                new Person(++PEOPLE_COUNT, "Vasily", 59, "amk.61@lol.ru"),
+                new Person(++PEOPLE_COUNT, "Elena", 49, "aef@lol.ru"),
+                new Person(++PEOPLE_COUNT, "Kotya", 8, "kot@lol.ru"));
     }
 
     @Override
@@ -45,5 +45,16 @@ public class PersonDaoImp implements PersonDao {
     public void save(Person person) {
         person.setId(++PEOPLE_COUNT);
         personList.add(person);
+    }
+
+    @Override
+    public void update(int id, Person person) {
+        Person updPerson = show(id);
+        updPerson.setName(person.getName());
+    }
+
+    @Override
+    public void delete(int id) {
+        personList.removeIf(person -> person.getId() == id);
     }
 }

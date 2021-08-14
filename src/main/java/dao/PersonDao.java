@@ -12,4 +12,7 @@ public interface PersonDao {
 
     void save(Person person);
 
+    void update(int id, Person person);
+
+    void delete(int id);
 }

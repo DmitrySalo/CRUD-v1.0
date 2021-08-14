@@ -25,4 +25,14 @@ public class PersonServiceImp implements PersonService {
     public void save(Person person) {
         personDaoImp.save(person);
     }
+
+    @Override
+    public void update(int id, Person person) {
+        personDaoImp.update(id, person);
+    }
+
+    @Override
+    public void delete(int id) {
+        personDaoImp.delete(id);
+    }
 }

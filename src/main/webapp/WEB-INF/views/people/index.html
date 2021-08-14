@@ -11,6 +11,11 @@
 </div>
 
 <br/>
-<a href="/people/new">Create new person</a>
+<hr/>
+
+<form th:action="@{/people/new}">
+    <input type="submit" value="Create new person"/>
+</form>
+
 </body>
 </html>
