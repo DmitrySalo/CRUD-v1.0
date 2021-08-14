@@ -51,6 +51,8 @@ public class PersonDaoImp implements PersonDao {
     public void update(int id, Person person) {
         Person updPerson = show(id);
         updPerson.setName(person.getName());
+        updPerson.setAge(person.getAge());
+        updPerson.setEmail(person.getEmail());
     }
 
     @Override
