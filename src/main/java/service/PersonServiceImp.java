@@ -20,4 +20,9 @@ public class PersonServiceImp implements PersonService {
     public Person show(int id) {
         return personDaoImp.show(id);
     }
+
+    @Override
+    public void save(Person person) {
+        personDaoImp.save(person);
+    }
 }

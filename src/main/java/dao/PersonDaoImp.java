@@ -34,6 +34,16 @@ public class PersonDaoImp implements PersonDao {
 
     @Override
     public Person show(int id) {
-        return (personList.get(id - 1) != null) ? personList.get(id - 1) : null;
+        return personList
+                .stream()
+                .filter(person -> person.getId() == id)
+                .findAny()
+                .orElse(null);
+    }
+
+    @Override
+    public void save(Person person) {
+        person.setId(++PEOPLE_COUNT);
+        personList.add(person);
     }
 }

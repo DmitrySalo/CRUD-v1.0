@@ -10,4 +10,6 @@ public interface PersonDao {
 
     Person show(int id);
 
+    void save(Person person);
+
 }
