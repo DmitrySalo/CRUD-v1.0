@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Person</title>
 </head>
 <body>
-    <p th:text="${person.getName()}">Name</p>
-    <p th:text="${person.getId()}">Id</p>
 
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Email</th>
+    </tr>
+    <tr>
+        <td th:text="${person.getId()}">Id</td>
+        <td th:text="${person.getName()}">Name</td>
+        <td th:text="${person.getAge()}">Age</td>
+        <td th:text="${person.getEmail()}">Email</td>
+    </tr>
+</table>
     <form th:action="@{/people/{id}/edit(id=${person.getId()})}">
         <input type="submit" value="Edit"/>
     </form>
