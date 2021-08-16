@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import app.service.UserService;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
@@ -29,8 +30,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", service.showById(id));
-        return "users/show";
+        Optional<User> userOptional = Optional.ofNullable((service.showById(id)));
+
+        if (userOptional.isPresent()) {
+            model.addAttribute("user", userOptional.get());
+            return "users/show";
+        }
+
+        return "users/not_found";
     }
 
     @GetMapping("/new")

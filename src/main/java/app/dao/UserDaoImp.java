@@ -24,7 +24,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User showById(int id) {
-        return Optional.of(entityManager.find(User.class, id)).orElse(null);
+        return Optional.ofNullable(entityManager.find(User.class, id)).orElse(null);
     }
 
     @Override
