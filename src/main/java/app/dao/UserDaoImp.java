@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class UserDaoImp implements UserDao {
@@ -23,7 +24,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User showById(int id) {
-        return entityManager.find(User.class, id);
+        return Optional.of(entityManager.find(User.class, id)).orElse(null);
     }
 
     @Override
