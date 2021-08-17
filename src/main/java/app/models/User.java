@@ -1,12 +1,17 @@
 package app.models;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,6 +33,12 @@ public class User {
     @Size(min = 6, max = 46, message = "Email length should be between 7 and 46 characters!")
     private String email;
 
+    @NotEmpty(message = "Enter the password!")
+    @Size(min = 6, max = 12, message = "Password length should be between 6 and 12 characters!")
+    private String password;
+
+    private Set<Role> roles;
+
     public User() {
     }
 
@@ -35,6 +46,56 @@ public class User {
         this.name = name;
         this.age = age;
         this.email = email;
+    }
+
+    public User(int id, String name, String password, Set<Role> roles) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
+    }
+    public User(int id, String name, int age, String email, String password, Set<Role> roles) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return name;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public int getId() {
@@ -67,6 +128,18 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

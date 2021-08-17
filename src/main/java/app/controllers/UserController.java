@@ -80,4 +80,21 @@ public class UserController {
         service.deleteById(id);
         return "redirect:/users";
     }
+
+    //==============================
+
+    @GetMapping(value = "/")
+    public String getHomePage() {
+        return "users/home";
+    }
+
+    @GetMapping(value = "/login")
+    public String getLoginPage() {
+        return "users/login";
+    }
+
+    @GetMapping(value = "/user")
+    public String getUserPage() {
+        return "users/user";
+    }
 }
