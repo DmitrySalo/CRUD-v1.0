@@ -2,99 +2,36 @@ package app.controllers;
 
 import app.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import app.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
-    private final UserService service;
+    private final UserDetailsService service;
 
     @Autowired
-    public UserController(UserService service) {
+    public UserController(UserDetailsService service) {
         this.service = service;
     }
 
-    @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("users", service.showAll());
-        return "users/index";
-    }
-
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        Optional<User> userOptional = Optional.ofNullable((service.showById(id)));
+    @GetMapping("/user")
+    public String getUserPage(@AuthenticationPrincipal User user, Model model) {
+        Optional<UserDetails> userOptional = Optional.ofNullable((service.loadUserByUsername(user.getName())));
 
         if (userOptional.isPresent()) {
-            model.addAttribute("user", userOptional.get());
-            return "users/show";
+            model.addAttribute("user", (User)(userOptional.get()));
+            return "user/user";
         }
 
-        return "users/not_found";
-    }
-
-    @GetMapping("/new")
-    public String newPerson(@ModelAttribute("user") User user) {
-        return "users/new";
-    }
-
-    @PostMapping()
-    public String create(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return "users/new";
-        }
-
-        service.createPerson(user);
-        return "redirect:/users";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", service.showById(id));
-        return "users/edit";
-    }
-
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") @Valid User user,
-                         BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return "users/edit";
-        }
-
-        service.updatePerson(user);
-        return "redirect:/users";
-    }
-
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
-        service.deleteById(id);
-        return "redirect:/users";
-    }
-
-    //==============================
-
-    @GetMapping(value = "/")
-    public String getHomePage() {
-        return "users/home";
-    }
-
-    @GetMapping(value = "/login")
-    public String getLoginPage() {
-        return "users/login";
-    }
-
-    @GetMapping(value = "/user")
-    public String getUserPage() {
-        return "users/user";
+        return "errors/not_found";
     }
 }

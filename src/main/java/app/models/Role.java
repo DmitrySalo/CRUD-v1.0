@@ -10,13 +10,14 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
 
     @Id
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "roles", unique = true)
     private String role;
 
-    /*@Transient
-    @ManyToMany(mappedBy = "roles")
+    //@Transient
+    /*@ManyToMany(mappedBy = "roles")
     private Set<User> users;*/
 
     public Role() {
