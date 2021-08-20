@@ -27,41 +27,49 @@ public class User implements UserDetails {
     @Max(value = 125, message = "Age should not be greater than 100!")
     private int age;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @NotEmpty(message = "Email should not be empty!")
     @Email(message = "Email should be valid!")
     @Size(min = 6, max = 46, message = "Email length should be between 7 and 46 characters!")
     private String email;
 
+    @Column(name = "login", unique = true)
+    @NotEmpty(message = "Enter the login!")
+    @Size(min = 6, max = 12, message = "Login length should be between 6 and 12 characters!")
+    private String login;
+
+    @Column(name = "password")
     @NotEmpty(message = "Enter the password!")
     @Size(min = 6, max = 12, message = "Password length should be between 6 and 12 characters!")
     private String password;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_ID"),
+            inverseJoinColumns = @JoinColumn(name = "role_ID"))
     private Set<Role> roles;
 
     public User() {
     }
 
-    public User(String name, int age, String email) {
+    public User(String name, int age, String email, String login, String password, Set<Role> roles) {
         this.name = name;
         this.age = age;
         this.email = email;
+        this.login = login;
+        this.password = password;
+        this.roles = roles;
     }
 
-    public User(int id, String name, String password, Set<Role> roles) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.roles = roles;
-    }
-    public User(int id, String name, int age, String email, String password, Set<Role> roles) {
+    /*public User(int id, String name, int age, String email, String login, String password, Set<Role> roles) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
+        this.login = login;
         this.password = password;
         this.roles = roles;
-    }
+    }*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -130,6 +138,14 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -151,15 +167,20 @@ public class User implements UserDetails {
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
+
         User user = (User) o;
+
         return id == user.id
                 && age == user.age
                 && name.equals(user.name)
-                && email.equals(user.email);
+                && email.equals(user.email)
+                && login.equals(user.login)
+                && password.equals(user.password)
+                && roles.equals(user.roles);
     }
 
     @Override
     public int hashCode() {
-        return 31 * Objects.hash(id, name, age, email);
+        return 31 * Objects.hash(id, name, age, email, login, password, roles);
     }
 }

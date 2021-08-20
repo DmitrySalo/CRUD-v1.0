@@ -2,30 +2,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Show user</title>
+    <title>User home page</title>
+    <style>
+        table, th, td {border: 1px solid black}
+        th, td {width: 20%}
+        table {width: 100%}
+    </style>
 </head>
 <body>
-    <table border="1">
+    <table>
         <tr>
             <th>Id</th>
             <th>Name</th>
             <th>Age</th>
             <th>Email</th>
+            <th>Login</th>
+            <th>Password</th>
+            <th>Roles</th>
         </tr>
         <tr>
             <td th:text="${user.getId()}">Id</td>
             <td th:text="${user.getName()}">Name</td>
             <td th:text="${user.getAge()}">Age</td>
             <td th:text="${user.getEmail()}">Email</td>
+            <td th:text="${user.getLogin()}">Login</td>
+            <td th:text="${user.getPassword()}">Password</td>
+            <td th:text="${user.getRoles()}">Roles</td>
         </tr>
     </table>
 
-    <form th:action="@{/users/{id}/edit(id=${user.getId()})}">
-        <input type="submit" value="Edit"/>
-    </form>
-
-    <form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
-        <input type="submit" value="Delete"/>
+    <br/>
+    <form th:action="@{/logout}" style="text-align: center">
+        <input type="submit" value="Logout"/>
     </form>
 </body>
 </html>
