@@ -44,15 +44,16 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user) {
+    public String newUser(@ModelAttribute("user") User user,
+                          @RequestParam(value = "checkbox", required = false) String string) {
         return "admin/new";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
-                         @RequestParam(value = "ADMIN", required = false) String ADMIN,
-                         @RequestParam(value = "USER", required = false) String USER) {
+                         @RequestParam(value = "checkbox_admin", required = false) String ADMIN,
+                         @RequestParam(value = "checkbox_user", required = false) String USER) {
 
         Set<Role> roles = new HashSet<>();
 
@@ -85,8 +86,8 @@ public class AdminController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
-                         @RequestParam(required = false, name = "ADMIN") String ADMIN,
-                         @RequestParam(required = false, name = "USER") String USER) {
+                         @RequestParam(name = "ADMIN", required = false) String ADMIN,
+                         @RequestParam(name = "USER", required = false) String USER) {
 
         Set<Role> roles = new HashSet<>();
 

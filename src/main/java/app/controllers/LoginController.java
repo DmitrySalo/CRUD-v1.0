@@ -12,10 +12,10 @@ import java.util.List;
 @RequestMapping("/")
 public class LoginController {
 
-    @GetMapping("/hello")
+   /* @GetMapping("/hello")
     public String getHelloPage() {
         return "hello";
-    }
+    }*/
 
     @GetMapping("/login")
     public String loginPage() {

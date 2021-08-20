@@ -35,15 +35,15 @@ public class User implements UserDetails {
 
     @Column(name = "login", unique = true)
     @NotEmpty(message = "Enter the login!")
-    @Size(min = 6, max = 12, message = "Login length should be between 6 and 12 characters!")
+    @Size(min = 4, max = 12, message = "Login length should be between 6 and 12 characters!")
     private String login;
 
     @Column(name = "password")
     @NotEmpty(message = "Enter the password!")
-    @Size(min = 6, max = 12, message = "Password length should be between 6 and 12 characters!")
+    @Size(min = 4, max = 12, message = "Password length should be between 6 and 12 characters!")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_ID"),
             inverseJoinColumns = @JoinColumn(name = "role_ID"))

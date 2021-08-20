@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -35,7 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         if(userService.showAll().isEmpty()) {
             auth.inMemoryAuthentication()
                     .withUser("root")
-                    .password("$2a$10$nNhUkIZdvguOhO06A8zCGOkeFqEa8iGJ911owal.C2uUW0A.vk1vi")
+                    //.password("$2a$10$nNhUkIZdvguOhO06A8zCGOkeFqEa8iGJ911owal.C2uUW0A.vk1vi") //root
+                    .password("root")
                     .roles("ADMIN");
         } else {
             auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
@@ -44,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity//.csrf().disable()
+        /*httpSecurity//.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login", "/hello").anonymous()
                 .antMatchers("/errors/**", "/default/**").permitAll()
@@ -62,10 +64,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and().logout()
                 .permitAll()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));*/
 
         //=====================================================================================
-        /*httpSecurity.formLogin()
+        httpSecurity.formLogin()
                 .successHandler(successUserHandler)
                 .loginProcessingUrl("/login")
                 .usernameParameter("login")
@@ -80,19 +82,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .authorizeRequests()
                 .antMatchers("/login").anonymous()
-                .antMatchers("/user/**, "/errors/**", "/default/**"").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+                .antMatchers("/user/**", "/errors/**", "/default/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
                 .antMatchers("/admin/**", "/user/**")
-                .access("hasAnyRole('ROLE_ADMIN')").anyRequest().authenticated();*/
+                .access("hasAnyRole('ROLE_ADMIN')").anyRequest().authenticated();
     }
 
     //отключен
-    /*@Bean
+    @Bean
     public static NoOpPasswordEncoder passwordEncoder() {
         return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-    }*/
+    }
 
-    @Bean
+    /*@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
+    }*/
 }

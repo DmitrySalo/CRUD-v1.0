@@ -34,13 +34,13 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public void createUser(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        //user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         entityManager.persist(user);
     }
 
     @Override
     public void updateUser(User user) {
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        //user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         entityManager.merge(user);
     }
 
