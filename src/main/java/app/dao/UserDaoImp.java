@@ -1,7 +1,7 @@
 package app.dao;
 
 import app.models.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import app.security.SecurityConfig;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -28,19 +28,24 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User getUserByName(String name) {
-        return Optional.ofNullable(entityManager.find(User.class, name)).orElse(null);
+    public User getUserByName(String login) {
+        return showAll()
+                .stream()
+                .filter(user -> user.getUsername().equals(login))
+                .findAny()
+                .orElse(null);
     }
 
     @Override
     public void createUser(User user) {
-        //user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setPassword(SecurityConfig.passwordEncoder().encode(user.getPassword()));
         entityManager.persist(user);
     }
 
     @Override
     public void updateUser(User user) {
-        //user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        System.out.println("saved user: " + user.getName());
+        user.setPassword(SecurityConfig.passwordEncoder().encode(user.getPassword()));
         entityManager.merge(user);
     }
 

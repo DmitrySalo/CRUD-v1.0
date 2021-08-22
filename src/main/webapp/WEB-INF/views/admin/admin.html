@@ -6,21 +6,21 @@
     <style>
         table, th, td {border: 1px solid black}
         th, td {width: 20%}
-        table {width: 100%}
+        table {width: 40%}
     </style>
 </head>
 <body>
-
-    <table>
-        <tr>
-            <th>Users</th>
-        </tr>
-        <tr th:each="user : ${admin}">
-            <td>
-                <a th:href="@{/admin/{id}(id=${user.getId()})}" th:text="${user.getName()}">user</a>
-            </td>
-        </tr>
-    </table>
+    <div align="center">
+        <table>
+            <tr>
+                <th>Users</th>
+            </tr>
+            <tr th:each="user : ${admin}">
+                <td>
+                    <a th:href="@{/admin/{id}(id=${user.getId()})}" th:text="${user.getName()}">user</a>
+                </td>
+            </tr>
+        </table>
 
     <br/>
     <hr/>
@@ -29,11 +29,16 @@
     <form th:action="@{/admin/new}">
         <input type="submit" value="Create new user"/>
     </form>
+    <br/>
 
+    <form th:action="@{/user}">
+        <input type="submit" value="Home page"/>
+    </form>
     <br/>
 
     <form th:action="@{/logout}">
         <input type="submit" value="Logout"/>
     </form>
+    </div>
 </body>
 </html>

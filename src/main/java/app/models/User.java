@@ -14,7 +14,8 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "name")
@@ -30,20 +31,20 @@ public class User implements UserDetails {
     @Column(name = "email", unique = true)
     @NotEmpty(message = "Email should not be empty!")
     @Email(message = "Email should be valid!")
-    @Size(min = 6, max = 46, message = "Email length should be between 7 and 46 characters!")
+    @Size(min = 6, max = 46, message = "Email length should be between 6 and 46 characters!")
     private String email;
 
     @Column(name = "login", unique = true)
     @NotEmpty(message = "Enter the login!")
-    @Size(min = 4, max = 12, message = "Login length should be between 6 and 12 characters!")
+    @Size(min = 4, max = 16, message = "Login length should be between 4 and 16 characters!")
     private String login;
 
     @Column(name = "password")
     @NotEmpty(message = "Enter the password!")
-    @Size(min = 4, max = 12, message = "Password length should be between 6 and 12 characters!")
+    @Size(min = 4, max = 80, message = "Password length should be between 4 and 80 characters!")
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_ID"),
             inverseJoinColumns = @JoinColumn(name = "role_ID"))
@@ -61,16 +62,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    /*public User(int id, String name, int age, String email, String login, String password, Set<Role> roles) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-        this.email = email;
-        this.login = login;
-        this.password = password;
-        this.roles = roles;
-    }*/
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -83,7 +74,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return getLogin();
     }
 
     @Override
@@ -182,5 +173,18 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return 31 * Objects.hash(id, name, age, email, login, password, roles);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

@@ -23,12 +23,14 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping("/user")
+    @GetMapping()
     public String getUserPage(@AuthenticationPrincipal User user, Model model) {
-        Optional<UserDetails> userOptional = Optional.ofNullable((service.loadUserByUsername(user.getName())));
+
+        Optional<UserDetails> userOptional =
+                Optional.ofNullable((service.loadUserByUsername(user.getUsername())));
 
         if (userOptional.isPresent()) {
-            model.addAttribute("user", (User)(userOptional.get()));
+            model.addAttribute("user", (User) (userOptional.get()));
             return "user/user";
         }
 

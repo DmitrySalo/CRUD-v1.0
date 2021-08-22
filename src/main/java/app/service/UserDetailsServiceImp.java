@@ -5,12 +5,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
-@Transactional(readOnly=true)
-@EnableTransactionManagement(proxyTargetClass = true)
+@Transactional(readOnly = true)
 public class UserDetailsServiceImp implements UserDetailsService {
     private final UserDao userDao;
 
@@ -19,7 +18,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        return userDao.getUserByName(name);
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        return userDao.getUserByName(login);
     }
 }

@@ -10,22 +10,18 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "roles", unique = true)
     private String role;
 
-    //@Transient
-    /*@ManyToMany(mappedBy = "roles")
-    private Set<User> users;*/
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    private Set<User> users;
 
     public Role() {
     }
-
-    /*public Role(int id) {
-        this.id = id;
-    }*/
 
     public Role(int id, String role) {
         this.id = id;
@@ -48,16 +44,21 @@ public class Role implements GrantedAuthority {
         this.role = role;
     }
 
-    /*public Set<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }*/
+    }
 
     @Override
     public String getAuthority() {
-        return role;
+        return getRole();
+    }
+
+    @Override
+    public String toString() {
+        return getRole().substring(5).replaceAll("[\\p{Punct}]+", "");
     }
 }

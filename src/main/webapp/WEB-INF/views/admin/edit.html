@@ -32,10 +32,14 @@
         <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>
         <br/>
 
-        <label>ADMIN</label>
-        <input type="checkbox" th:value="ROLE_ADMIN" th:name="checkbox_admin"/>
-        <label>USER</label>
-        <input type="checkbox" th:value="ROLE_USER" th:name="checkbox_user"/>
+        <label>
+            <input th:type="checkbox" th:id="1" th:name="ADMIN" th:value="ADMIN">
+        </label>
+        <label th:for="ADMIN">ADMIN</label>
+        <label>
+            <input th:type="checkbox" th:id="2" th:name="USER" th:value="USER">
+        </label>
+        <label th:for="USER">USER</label>
         <br/>
         <br/>
 

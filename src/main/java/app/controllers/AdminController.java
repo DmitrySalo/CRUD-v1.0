@@ -2,6 +2,7 @@ package app.controllers;
 
 import app.models.Role;
 import app.models.User;
+import app.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,37 +45,43 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user,
-                          @RequestParam(value = "checkbox", required = false) String string) {
+    public String newUser(@ModelAttribute("user") User user) {
         return "admin/new";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult,
-                         @RequestParam(value = "checkbox_admin", required = false) String ADMIN,
-                         @RequestParam(value = "checkbox_user", required = false) String USER) {
-
-        Set<Role> roles = new HashSet<>();
-
-        if(ADMIN != null) {
-            roles.add(new Role(1, ADMIN));
-        }
-        if (USER != null) {
-            roles.add(new Role(2, USER));
-        }
-        if (ADMIN == null && USER == null) {
-            roles.add(new Role(2, USER));
-        }
-
-        user.setRoles(roles);
+                         @RequestParam(value = "ADMIN", required = false) String ADMIN,
+                         @RequestParam(value = "USER", required = false) String USER) {
 
         if (bindingResult.hasErrors()) {
             return "admin/new";
         }
 
+        setRolesIf(user, ADMIN, USER);
         service.createPerson(user);
         return "redirect:/admin";
+    }
+
+    private void setRolesIf(@ModelAttribute("user") @Valid User user,
+                            @RequestParam(value = "ADMIN", required = false) String ADMIN,
+                            @RequestParam(value = "USER", required = false) String USER) {
+        Set<Role> roles = new HashSet<>();
+
+        if(ADMIN != null) {
+            roles.add(new Role(1, ADMIN));
+        }
+
+        if (USER != null) {
+            roles.add(new Role(2, USER));
+        }
+
+        if ((ADMIN == null) && (USER == null)) {
+            roles.add(new Role(2, USER));
+        }
+
+        user.setRoles(roles);
     }
 
     @GetMapping("/{id}/edit")
@@ -89,24 +96,11 @@ public class AdminController {
                          @RequestParam(name = "ADMIN", required = false) String ADMIN,
                          @RequestParam(name = "USER", required = false) String USER) {
 
-        Set<Role> roles = new HashSet<>();
-
-        if(ADMIN != null) {
-            roles.add(new Role(1, ADMIN));
-        }
-        if (USER != null) {
-            roles.add(new Role(2, USER));
-        }
-        if (ADMIN == null && USER == null) {
-            roles.add(new Role(2, USER));
-        }
-
-        user.setRoles(roles);
-
         if (bindingResult.hasErrors()) {
             return "admin/edit";
         }
 
+        setRolesIf(user, ADMIN, USER);
         service.updatePerson(user);
         return "redirect:/admin";
     }
