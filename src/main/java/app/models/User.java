@@ -1,5 +1,8 @@
 package app.models;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -44,7 +47,8 @@ public class User implements UserDetails {
     @Size(min = 4, max = 80, message = "Password length should be between 4 and 80 characters!")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_ID"),
             inverseJoinColumns = @JoinColumn(name = "role_ID"))

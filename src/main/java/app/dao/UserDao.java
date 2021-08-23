@@ -1,5 +1,6 @@
 package app.dao;
 
+import app.models.Role;
 import app.models.User;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface UserDao {
     void deleteById(int id);
 
     User getUserByName(String name);
+
+    List<Role> showRoles();
 }

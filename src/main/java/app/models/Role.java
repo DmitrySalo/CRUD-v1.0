@@ -1,5 +1,8 @@
 package app.models;
 
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -17,7 +20,8 @@ public class Role implements GrantedAuthority {
     @Column(name = "roles", unique = true)
     private String role;
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
     private Set<User> users;
 
     public Role() {

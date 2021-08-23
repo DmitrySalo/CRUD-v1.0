@@ -1,6 +1,7 @@
 package app.service;
 
 import app.dao.UserDao;
+import app.models.Role;
 import app.models.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +41,10 @@ public class UserServiceImp implements UserService {
     @Override
     public void deleteById(int id) {
         userDao.deleteById(id);
+    }
+
+    @Override
+    public List<Role> showRoles() {
+        return userDao.showRoles();
     }
 }

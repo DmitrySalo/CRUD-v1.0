@@ -1,5 +1,6 @@
 package app.service;
 
+import app.models.Role;
 import app.models.User;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface UserService {
     void updatePerson(User user);
 
     void deleteById(int id);
+
+    List<Role> showRoles();
 }
