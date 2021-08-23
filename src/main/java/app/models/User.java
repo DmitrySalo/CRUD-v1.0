@@ -48,7 +48,6 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_ID"),
             inverseJoinColumns = @JoinColumn(name = "role_ID"))

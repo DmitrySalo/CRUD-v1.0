@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,10 +30,10 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User getUserByName(String login) {
-        return showAll()
-                .stream()
-                .filter(user -> user.getUsername().equals(login))
-                .findAny()
+        return Optional.ofNullable(entityManager
+                .createQuery("select distinct user from User user join fetch user.roles roles where user.login=:login", User.class)
+                .setParameter("login", login)
+                .getSingleResult())
                 .orElse(null);
     }
 
@@ -61,6 +60,4 @@ public class UserDaoImp implements UserDao {
     public void deleteById(int id) {
         entityManager.remove(showById(id));
     }
-
-
 }
