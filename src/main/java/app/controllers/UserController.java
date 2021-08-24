@@ -26,13 +26,14 @@ public class UserController {
 
     @GetMapping()
     public String getUserPage(@AuthenticationPrincipal User user, Model model) {
-        try {
-            Optional<UserDetails> userOptional =
-                    Optional.ofNullable(service.loadUserByUsername(user.getLogin()));
-            userOptional.ifPresent(userDetails -> model.addAttribute("user", userDetails));
-        } catch (NoResultException ignore) {
-            return "errors/not_found";
+        Optional<UserDetails> userOptional =
+                Optional.ofNullable(service.loadUserByUsername(user.getLogin()));
+
+        if (userOptional.isPresent()) {
+            model.addAttribute("user", userOptional.get());
+            return "user/user";
         }
-        return "user/user";
+
+        return "errors/not_found";
     }
 }

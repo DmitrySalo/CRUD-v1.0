@@ -69,7 +69,7 @@ public class AdminController {
                             @RequestParam(value = "USER", required = false) String USER) {
         Set<Role> roles = new HashSet<>();
 
-        if(ADMIN != null) {
+        if (ADMIN != null) {
             roles.add(new Role(1, ADMIN));
         }
 
